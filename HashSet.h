@@ -16,7 +16,11 @@ public:
 
     unsigned int size() const;
 
+    bool empty() const;
+
     unsigned int collisionCount() const;
+
+    void clear();
 
 private:
     unsigned int totalBuckets;

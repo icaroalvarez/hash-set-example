@@ -21,14 +21,12 @@ void HashSet::insert(std::int64_t value)
 void HashSet::erase(std::int64_t value)
 {
     const auto hash{calculateHash(value)};
-    for(const auto it : table.at(hash))
+    auto it{std::find(table.at(hash).begin(), table.at(hash).end(), value)};
+    const auto valueFound{it not_eq table.at(hash).end()};
+    if(valueFound)
     {
-        if(it == value)
-        {
-            table.at(hash).remove(it);
-            totalElements--;
-            return;
-        }
+        table.at(hash).erase(it);
+        totalElements--;
     }
 }
 
@@ -62,4 +60,15 @@ unsigned int HashSet::collisionCount() const
 unsigned int HashSet::calculateHash(std::int64_t value) const
 {
     return value % totalBuckets;
+}
+
+bool HashSet::empty() const
+{
+    return size() == 0;
+}
+
+void HashSet::clear()
+{
+    table = std::vector<std::list<std::int64_t>>(totalBuckets);
+    totalElements = 0;
 }

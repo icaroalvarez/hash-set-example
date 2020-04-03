@@ -8,6 +8,11 @@ SCENARIO("64 bit hashing set")
         constexpr auto totalBuckets{30};
         HashSet hashSet{totalBuckets};
 
+        THEN("The set is empty")
+        {
+            REQUIRE(hashSet.empty());
+        }
+
         WHEN("Hash set is populated with values")
         {
             constexpr auto totalValues{100};
@@ -45,6 +50,21 @@ SCENARIO("64 bit hashing set")
                     REQUIRE_FALSE(hashSet.contains(42));
                 }
             }
+
+            AND_WHEN("The set is cleared")
+            {
+                hashSet.clear();
+
+                THEN("The set is empty")
+                {
+                    REQUIRE(hashSet.empty());
+                }
+
+                THEN("There are no collisions")
+                {
+                    REQUIRE_FALSE(hashSet.collisionCount());
+                }
+            }
         }
 
         WHEN("The set is populated with the same value")
@@ -55,6 +75,16 @@ SCENARIO("64 bit hashing set")
             THEN("The second insertion is omitted")
             {
                 REQUIRE(hashSet.size() == 1);
+            }
+        }
+
+        WHEN("Trying to remove a value that is not in the set")
+        {
+            hashSet.erase(1);
+
+            THEN("The number of values is still the same")
+            {
+                REQUIRE(hashSet.empty());
             }
         }
     }
