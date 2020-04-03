@@ -1,0 +1,5 @@
+if (NOT TARGET catch)
+    message("including catch")
+    add_library(catch INTERFACE)
+    target_include_directories(catch INTERFACE catch2)
+endif ()
